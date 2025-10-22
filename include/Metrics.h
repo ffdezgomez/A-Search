@@ -19,8 +19,7 @@ struct Metrics {
 
   void Reset() {
     generated_nodes = 0;
-    inspected_nodes = 0;
-    retrys_count = 0; 
+    inspected_nodes = 0; 
     cost_of_path = 0;
   }
 };

@@ -46,7 +46,7 @@ Grid::Grid(std::ifstream& input_file) {
  * @return CellType 
  */
 CellType Grid::GetCellType(int x, int y) const {
-  if (x < 0 || y < 0 || y >= grid_.size() || x >= grid_[0].size()) {
+  if (x < 0 || y < 0 || y >= grid_[0].size() || x >= grid_.size()) {
     return WALL; // Out of bounds treated as WALL
   }
   return grid_[x][y];
@@ -61,55 +61,38 @@ CellType Grid::GetCellType(int x, int y) const {
 std::vector<std::pair<Cell, Action>> Grid::GetNeighbours(Cell cell) const {
   std::vector<std::pair<Cell, Action>> neighbours;
   std::pair<Cell, Action> neighbour_action;
-  if (cell.x < rows_ && cell.y - 1 < columns_ && cell.x >= 0 && cell.y - 1 >= 0) {
     if (GetCellType(cell.x, cell.y - 1) != WALL) {
-      neighbour_action = {Cell{cell.x, cell.y - 1, GetCellType(cell.x, cell.y - 1)}, NORTH};
+      neighbour_action = {Cell{cell.x, cell.y - 1, GetCellType(cell.x, cell.y - 1)}, WEST};
       neighbours.push_back(neighbour_action);
     }
-  } 
-  if (cell.x < rows_ && cell.y + 1 < columns_ && cell.x >= 0 && cell.y + 1 >= 0) {
     if (GetCellType(cell.x, cell.y + 1) != WALL) {
-      neighbour_action = {Cell{cell.x, cell.y + 1, GetCellType(cell.x, cell.y + 1)}, SOUTH};
+      neighbour_action = {Cell{cell.x, cell.y + 1, GetCellType(cell.x, cell.y + 1)}, EAST};
       neighbours.push_back(neighbour_action);
     }
-  } 
-  if (cell.x - 1 < rows_ && cell.y < columns_ && cell.x - 1 >= 0 && cell.y >= 0) {
     if (GetCellType(cell.x - 1, cell.y ) != WALL) {
-      neighbour_action = {Cell{cell.x - 1, cell.y, GetCellType(cell.x - 1, cell.y)}, WEST};
+      neighbour_action = {Cell{cell.x - 1, cell.y, GetCellType(cell.x - 1, cell.y)}, NORTH};
       neighbours.push_back(neighbour_action);
     }
-  } 
-  if (cell.x + 1 < rows_ && cell.y < columns_ && cell.x + 1 >= 0 && cell.y >= 0) {
     if (GetCellType(cell.x + 1, cell.y) != WALL) {
-      neighbour_action = {Cell{cell.x + 1, cell.y, GetCellType(cell.x + 1, cell.y)}, EAST};
+      neighbour_action = {Cell{cell.x + 1, cell.y, GetCellType(cell.x + 1, cell.y)}, SOUTH};
       neighbours.push_back(neighbour_action);
     }
-  }
-  if (cell.x - 1 < rows_  && cell.y - 1 < columns_ && cell.x - 1 >= 0 && cell.y - 1 >= 0) {
     if (GetCellType(cell.x - 1, cell.y - 1) != WALL) {
       neighbour_action = {Cell{cell.x - 1, cell.y - 1, GetCellType(cell.x - 1, cell.y - 1)}, NORTH_WEST};
       neighbours.push_back(neighbour_action);
     }
-  }
-  if (cell.x + 1 < rows_ && cell.y - 1 < columns_ && cell.x + 1 >= 0 && cell.y - 1 >= 0) {
     if (GetCellType(cell.x + 1, cell.y - 1) != WALL) {
-      neighbour_action = {Cell{cell.x + 1, cell.y - 1, GetCellType(cell.x + 1, cell.y - 1)}, NORTH_EAST};
+      neighbour_action = {Cell{cell.x + 1, cell.y - 1, GetCellType(cell.x + 1, cell.y - 1)}, SOUTH_WEST};
       neighbours.push_back(neighbour_action);
     }
-  }
-  if (cell.x - 1 < rows_ && cell.y + 1 < columns_ && cell.x - 1 >= 0 && cell.y + 1 >= 0) {
     if (GetCellType(cell.x - 1, cell.y + 1) != WALL) {
-      neighbour_action = {Cell{cell.x - 1, cell.y + 1, GetCellType(cell.x - 1, cell.y + 1)}, SOUTH_WEST};
+      neighbour_action = {Cell{cell.x - 1, cell.y + 1, GetCellType(cell.x - 1, cell.y + 1)}, NORTH_EAST};
       neighbours.push_back(neighbour_action);
     }
-  }
-  if (cell.x + 1 < rows_ && cell.y + 1 < columns_ && cell.x + 1 >= 0 && cell.y + 1 >= 0) {
     if (GetCellType(cell.x + 1, cell.y + 1) != WALL) {
       neighbour_action = {Cell{cell.x + 1, cell.y + 1, GetCellType(cell.x + 1, cell.y + 1)}, SOUTH_EAST};
       neighbours.push_back(neighbour_action);
     }
-  }
-
   return neighbours;
 } 
 
@@ -158,6 +141,14 @@ float Grid::CalculateWallsPercentage() const {
  * @param new_goal 
  */
 void Grid::NewStartAndGoal(const Cell& new_start, const Cell& new_goal) {
+  if (new_start.x < 0 || new_start.x >= rows_ || new_start.y < 0 || new_start.y >= columns_) {
+    throw std::runtime_error("New start position is out of grid bounds");
+  }
+
+  if (new_goal.x < 0 || new_goal.x >= rows_ || new_goal.y < 0 || new_goal.y >= columns_) {
+    throw std::runtime_error("New goal position is out of grid bounds");
+  }
+
   grid_[start_.x][start_.y] = EMPTY;
   grid_[goal_.x][goal_.y] = EMPTY;
   grid_[new_start.x][new_start.y] = START;

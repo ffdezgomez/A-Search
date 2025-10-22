@@ -8,7 +8,7 @@
 #include "CellType.h"
 #include "Actions.h"
 
-#define P_IN 0.2 
+#define P_IN 0.0 
 #define P_OUT 0.5
 
 /**

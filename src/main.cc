@@ -74,6 +74,9 @@ int main (int argc, char* argv[]) {
       metrics.walls_percentage = agent.GetEnvironment().CalculateWallsPercentage();
       metrics.Reset();
       continue;
+    } else if (metrics.retrys_count > 5) {
+      std::cerr << "No path found after 5 retries. Terminating." << std::endl;
+      return 0;
     } else {
       /// Move the agent one step 
       agent.Step(path);
@@ -92,6 +95,7 @@ int main (int argc, char* argv[]) {
       agent.GetEnvironment().UpdateGrid();
       metrics.walls_percentage = agent.GetEnvironment().CalculateWallsPercentage();
       metrics.Reset();
+      metrics.retrys_count = 0;
       search.Reset();
       search.SetGrid(agent.GetEnvironment());
     }
