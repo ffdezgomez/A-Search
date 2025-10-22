@@ -1,8 +1,12 @@
 ***
 >***Universidad de La Laguna***
+>
 >***Escuela Superior de Informática y Tecnología***
+>
 >**Asignatura:** Inteligencia Artificial
+>
 >**Autor:** Francisco R. Fdez Gómez
+>
 >**Contacto:** alu0101427324@ull.edu.es
 
 # Diseño e Implementación de la Búsqueda A*
